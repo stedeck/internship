@@ -1,8 +1,9 @@
 \documentclass[]{article}
+\usepackage[parfill]{parskip}
 
 %opening
-\title{}
-\author{}
+\title{Time Series Analysis for Monitoring}
+\author{Stefanie Deckers}
 
 \begin{document}
 
@@ -11,8 +12,9 @@
 \begin{abstract}
 
 \begin{itemize}
-	TODO
+	%TODO Add somewhere that it's more a system monitoring tool at the current state
 	
+	% Overview of what I've done. Write that in report
 	\item First some fourier and wavelet approaches, just to figure out how data could be processed generally. What I did: Had a set of metrics, applied fourier or wavelet and tried to cluster. I just could evaluate "manually" by having a look at the different clusters. At the end no approach was used because of two reasons: the data must be processed in real time. And it was decided to first focus single metrics. 
 	
 	\item We needed a kind of anomaly / change detection. An example scenario is requests to a web service. If there are suddenly much less requests / second the user should be warned by the system. So a simple approach was applied by finding kind of confidence intervals in which the number of request / second should lie. If to much values are monitored that are below or above this interval, it is considered a change. This approach has the disadvantage that it does not take any seasonality into account.
@@ -150,8 +152,33 @@ For instance one can send many read or write requests to a database or write a l
 That simulates too different problems that can be labeled and used as a training set.
 
 % TODO rename...
-\section{Appraoches or so...}
+\section{Applied techniques}
+During the internship several issues were addressed.
+In the following subsections an overview of the topics and the applied techniques is given.
+
 \subsection{Anomaly detection}
+One topic for monitoring is finding anomalies or changes in a single metric.
+If a metric starts to behave different than usual the user should be informed about that.
+An example of this case is the amount http requests to a server; if there are no requests monitored - or much less than usual, there might be a problem somewhere that should be investigated. 
+
+\subsubsection{Confidence interval}
+The first approach to detect changes was a simple confidence interval based on percentiles of the data.
+For this purpose the the last two minutes of data is taken and divided into two windows.
+The first window is considered normal and functions as the reference data.
+The second window contains the data that is tested for "normality".
+
+The 5th and the 95th percentile of the reference data is taken as a confidence interval.
+It is assumed that data of this metric normally lies within that interval.
+So the test data should mainly lie within this interval, otherwise a change in the recent window is assumed.
+
+To decide whether there is a change or not a "normality index" was introduced.
+%TODO add and descrie normality index
+
+%TODO check windowlengths...
+
+- only tempory changes
+- no periodicity
+
 
 simple appraoch with percentiles
 
