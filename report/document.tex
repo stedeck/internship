@@ -163,7 +163,7 @@ An example of this case is the amount http requests to a server; if there are no
 
 \subsubsection{Confidence interval}
 The first approach to detect changes was a simple confidence interval based on percentiles of the data.
-For this purpose the the last two minutes of data is taken and divided into two windows.
+For this purpose the last two minutes of data is taken and divided into two windows.
 The first window is considered normal and functions as the reference data.
 The second window contains the data that is tested for "normality".
 
@@ -171,20 +171,68 @@ The 5th and the 95th percentile of the reference data is taken as a confidence i
 It is assumed that data of this metric normally lies within that interval.
 So the test data should mainly lie within this interval, otherwise a change in the recent window is assumed.
 
-To decide whether there is a change or not a "normality index" was introduced.
-%TODO add and descrie normality index
-
-%TODO check windowlengths...
-
-- only tempory changes
-- no periodicity
+%TODO add and describe normality index
+%To decide whether there is a change or not a "normality index" was introduced.
 
 
-simple appraoch with percentiles
+%TODO check windowlengths... and how many values must lie outside the interval to rise a change
 
-twitter breakout and anomaly detection
+% TODO add evaluation
+
+This approach is only able to detect local changes, i.e. if the monitored values are higher or lower than before.
+If the reference contains unusual data, it would be considered a change anymore.
+There is no information about the global behaviour taken into account.
+Moreover this approach does not take any periodicity or seasonality into account.
+Anomalies regarding periodical behaviour is addressed in section \ref{sec:gp}.
+
+\subsubsection{Twitter Breakout algorithm}
+The above approach for gives many false positives.
+Even for small changes between the reference and the test window a change is raised or when there is a continuous increase.
+If there is a decrease over both windows, the second window is considered different from the first one as well.
+So as a more sophisticated way, the twitter breakout algorithm was tested.
+
+
+% TODO find and summarize twitter breakout algorihtm paper
+% TODO describe results, eventually install R kernel again to rerun experiments
+
+% TODO maybe also add twitter anomaly detection
+
+\subsubsection{Gaussian Processes}
+\label{sec:gp}
+
+To tackle anomalies in a wider context of the data and also taking periodic behaviour into account Gaussian Processes were tried.
+Basically two different attempts were made to model the behaviour of a metric.
+
+In the first one relies on the usage of a periodic kernel.
+% TODO describe exact kernel and parameters
+
+Because the model should be able to adapt to different time series the hyperparameters - especially the period of the periodic part of the kernel - should be learned by hyperparameter optimization.
+% TODO describe that I used GPML toolbox method... look into it again to see, what method was used. Also mention that I tried different methods and why I hoped that one works better than the other
+
+% TODO add an working "learned" example
+
+Unfortunately no kernel was found that could adapt to different time series.
+The problem here was the hyperparameter initialization.
+% TODO Explain, what I've done/tried
+
+Some attempts were made to initialize the hyperparameters in a more sophisticated way.
+% TODO describe, what I tried
+
+
+% TODO describe second attempt. More robust, but less flexible...
+
+% TODO made it updateble
+
+% TODO ideas to also add longterm trend
+
+% TODO describe attempt to also detect other than weekly patterns
+
+% TODO somewhere add which frameworks I've used (gpml toolbox and weka)
+
+% TODO try to add complexity... O(n) stuff
 
 two gp approaches (periodic and weekday attributes)
+% TODO somewhere add advantage that it takes noise into account and other advantages... need to motivate the usage of gp somehow... also like bayes... xD
 
 \subsection{Linear regression}
 disk space problem. rls as solution for lack of historic data.
@@ -195,5 +243,6 @@ explain what is meant by knowledge and give examples... to many false positive. 
 \subsection{Correlation}
 First approaches to find correlations between time series. Put aside, because change detection had higher priority.
 
+\section{Summary and Conclusion}
 
 \end{document}
